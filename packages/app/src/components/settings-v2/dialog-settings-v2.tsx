@@ -11,9 +11,7 @@ import { SettingsNotificationsV2 } from "./notifications"
 import { SettingsProvidersV2 } from "./providers"
 import { SettingsModelsV2 } from "./models"
 import { SettingsServersV2 } from "./servers"
-import { SettingsProjectsV2 } from "./projects"
-import { SettingsExtensionsV2 } from "./extensions"
-import { SettingsServerScope } from "../settings-server-picker"
+import { SettingsWorkspacesV2 } from "./workspaces"
 import { useDialog } from "@opencode-ai/ui/context/dialog"
 import { useLayout } from "@/context/layout"
 import { useTabs } from "@/context/tabs"
@@ -64,53 +62,43 @@ export const DialogSettings: Component<{
       >
         <TabsV2.List>
           <div class="flex flex-col justify-between h-full w-full">
-            <div class="flex flex-col gap-4 w-full">
-              {/* Group 1: Preferences */}
-              <div class="flex flex-col gap-1 w-full">
-                <TabsV2.Trigger value="general">
-                  <Icon name="sliders" />
-                  {language.t("settings.tab.preferences")}
-                </TabsV2.Trigger>
-                <TabsV2.Trigger value="appearance">
-                  <Icon name="appearance" />
-                  {language.t("settings.general.section.appearance")}
-                </TabsV2.Trigger>
-                <TabsV2.Trigger value="notifications">
-                  <Icon name="notifications" />
-                  {language.t("settings.tab.notifications")}
-                </TabsV2.Trigger>
-                <TabsV2.Trigger value="shortcuts">
-                  <Icon name="keyboard" />
-                  {language.t("settings.tab.shortcuts")}
-                </TabsV2.Trigger>
-              </div>
+            <div class="flex flex-col gap-3 w-full">
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-1.5">
+                  <TabsV2.SectionTitle>{language.t("settings.section.desktop")}</TabsV2.SectionTitle>
+                  <div class="flex flex-col gap-1.5 w-full">
+                    <TabsV2.Trigger value="general">
+                      <Icon name="sliders" size="small" />
+                      {language.t("settings.tab.general")}
+                    </TabsV2.Trigger>
+                    <TabsV2.Trigger value="shortcuts">
+                      <Icon name="keyboard" size="small" />
+                      {language.t("settings.tab.shortcuts")}
+                    </TabsV2.Trigger>
+                  </div>
+                </div>
 
-              {/* Group 2: Environment & Workspaces */}
-              <div class="flex flex-col gap-1 w-full">
-                <TabsV2.Trigger value="servers">
-                  <Icon name="server" />
-                  {language.t("status.popover.tab.servers")}
-                </TabsV2.Trigger>
-                <TabsV2.Trigger value="projects">
-                  <Icon name="folder" />
-                  {language.t("settings.tab.projects")}
-                </TabsV2.Trigger>
-              </div>
-
-              {/* Group 3: Capabilities & Extensions */}
-              <div class="flex flex-col gap-1 w-full">
-                <TabsV2.Trigger value="providers">
-                  <Icon name="providers" />
-                  {language.t("settings.providers.title")}
-                </TabsV2.Trigger>
-                <TabsV2.Trigger value="models">
-                  <Icon name="models" />
-                  {language.t("settings.models.title")}
-                </TabsV2.Trigger>
-                <TabsV2.Trigger value="extensions">
-                  <Icon name="extensions" />
-                  {language.t("settings.tab.extensions")}
-                </TabsV2.Trigger>
+                <div class="flex flex-col gap-1.5">
+                  <TabsV2.SectionTitle>{language.t("settings.section.server")}</TabsV2.SectionTitle>
+                  <div class="flex flex-col gap-1.5 w-full">
+                    <TabsV2.Trigger value="workspaces">
+                      <Icon name="workspace-isolated" size="small" />
+                      {language.t("settings.tab.workspaces")}
+                    </TabsV2.Trigger>
+                    <TabsV2.Trigger value="servers">
+                      <Icon name="server" size="small" />
+                      {language.t("status.popover.tab.servers")}
+                    </TabsV2.Trigger>
+                    <TabsV2.Trigger value="providers">
+                      <Icon name="providers" size="small" />
+                      {language.t("settings.providers.title")}
+                    </TabsV2.Trigger>
+                    <TabsV2.Trigger value="models">
+                      <Icon name="models" size="small" />
+                      {language.t("settings.models.title")}
+                    </TabsV2.Trigger>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -133,23 +121,18 @@ export const DialogSettings: Component<{
         <TabsV2.Content value="shortcuts" class="settings-v2-panel">
           <SettingsKeybinds v2 />
         </TabsV2.Content>
+        <TabsV2.Content value="workspaces" class="settings-v2-panel">
+          <SettingsWorkspacesV2 activeDirectory={directory()} />
+        </TabsV2.Content>
         <TabsV2.Content value="servers" class="settings-v2-panel">
           <SettingsServersV2 />
         </TabsV2.Content>
-        <TabsV2.Content value="projects" class="settings-v2-panel">
-          <SettingsProjectsV2 />
+        <TabsV2.Content value="providers" class="settings-v2-panel">
+          <SettingsProvidersV2 directory={directory()} onBack={showProviders} />
         </TabsV2.Content>
-        <SettingsServerScope directory={directory()}>
-          <TabsV2.Content value="providers" class="settings-v2-panel">
-            <SettingsProvidersV2 directory={directory()} onBack={showProviders} />
-          </TabsV2.Content>
-          <TabsV2.Content value="models" class="settings-v2-panel">
-            <SettingsModelsV2 />
-          </TabsV2.Content>
-          <TabsV2.Content value="extensions" class="settings-v2-panel">
-            <SettingsExtensionsV2 />
-          </TabsV2.Content>
-        </SettingsServerScope>
+        <TabsV2.Content value="models" class="settings-v2-panel">
+          <SettingsModelsV2 />
+        </TabsV2.Content>
       </TabsV2>
     </Dialog>
   )

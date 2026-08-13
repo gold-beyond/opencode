@@ -46,7 +46,7 @@ export function DirectoryDataProvider(
     () => params.id,
     (id) =>
       serverSync()
-        .session.hydrate(id)
+        .session.sync(id)
         .catch(() => {}),
   )
 
